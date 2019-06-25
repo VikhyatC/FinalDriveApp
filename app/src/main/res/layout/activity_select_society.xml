@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:id="@+id/main_layout"
+    >
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/flayout"
+            android:layout_gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_gravity="end"
+                android:id="@+id/top_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <ImageButton
+                    android:id="@+id/upload_button"
+                    android:layout_width="35.0dp"
+                    android:layout_margin="8.0dp"
+                    android:background="@drawable/circle_btn_up"
+                    android:layout_height="35.0dp"
+                    android:textAllCaps="false"
+                    />
+                <ImageView
+                    android:layout_width="35.0dp"
+                    android:layout_height="35.0dp"
+                    android:layout_margin="8.0dp"
+                    app:srcCompat="@drawable/ic_arrow_upward_24dp"
+                    />
+
+                <ImageButton
+                    android:id="@+id/resync_button"
+                    android:layout_toRightOf="@+id/upload_button"
+                    android:layout_width="35.0dp"
+                    android:layout_margin="8.0dp"
+                    android:background="@drawable/circle_btn_up"
+                    android:layout_height="35.0dp"
+                    android:textAllCaps="false" />
+
+                <ImageView
+                    android:layout_toRightOf="@+id/upload_button"
+                    android:layout_width="35.0dp"
+                    android:layout_height="35.0dp"
+                    android:layout_margin="8.0dp"
+                    app:srcCompat="@drawable/ic_arrow_downward_24dp"
+                    />
+                <ImageView
+                    android:layout_toRightOf="@+id/resync_button"
+                    android:id="@+id/logOuticon"
+                    android:layout_width="35.0dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="8.0dp"
+                    android:src="@drawable/logout"
+                    android:layout_height="35.0dp" />
+
+            </RelativeLayout>
+
+
+
+
+
+        </FrameLayout>
+        <LinearLayout
+            android:layout_below="@+id/flayout"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:weightSum="20"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="4dp"
+                android:id="@+id/company_logo"
+                android:src="@drawable/sh_logo"
+                android:layout_marginBottom="5.0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="4.8"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:layout_marginTop="50dp"
+                android:text="Select Society"
+                android:textColor="@android:color/darker_gray"
+                android:layout_gravity="start"
+                />
+            <Spinner
+                android:id="@+id/societyList"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="15.0dp"
+                android:gravity="start"
+                android:layout_marginRight="15.0dp"
+                android:layout_weight="1.5"
+                android:layout_marginBottom="8dp"
+                android:layout_height="0dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:text="Select Apartment"
+                android:layout_weight="2"
+                android:textColor="@android:color/darker_gray"
+                android:layout_gravity="start"
+                />
+            <Spinner
+                android:id="@+id/aptList"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="15.0dp"
+                android:gravity="start"
+                android:layout_marginRight="15.0dp"
+                android:layout_weight="1.5"
+                android:layout_height="0dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2"
+                android:text="Select Metering point"
+                android:textColor="@android:color/darker_gray"
+                android:layout_gravity="start"
+                />
+            <Spinner
+                android:id="@+id/mtrList"
+                android:layout_width="match_parent"
+                android:layout_weight="1.5"
+                android:gravity="start"
+                android:layout_marginLeft="15.0dp"
+                android:layout_marginRight="15.0dp"
+                android:layout_height="0dp"/>
+            <Button
+                android:id="@+id/select_btn"
+                android:layout_margin="20.0dp"
+                android:layout_width="120.0dp"
+                android:background="@drawable/curvedcorners"
+                android:layout_height="wrap_content"
+                android:text="Select"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                />
+            <RadioGroup
+                android:orientation="horizontal"
+                android:id="@+id/radioUrl"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_gravity="bottom"
+                android:layout_height="80.0dp" >
+
+                <RadioButton
+                    android:id="@+id/radioBefore"
+                    android:layout_width="wrap_content"
+                    android:layout_marginRight="10.0dp"
+                    android:layout_height="match_parent"
+                    android:text="Before"
+                    android:checked="true"
+                    android:layout_marginEnd="10.0dp" />
+
+                <RadioButton
+                    android:id="@+id/radioAfter"
+                    android:layout_marginLeft="10.0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="After"
+                    android:layout_marginStart="10.0dp" />
+
+            </RadioGroup>
+        </LinearLayout>
+    </RelativeLayout>
+
+
+
+
+
+    <ProgressBar
+        android:id="@+id/loadingBar"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#000"
+        />
+</FrameLayout>

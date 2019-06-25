@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:background="@drawable/round_box_et"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/label"
+        android:typeface="serif"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Please Enter the name of the file"
+        android:textColor="#000"
+        android:textSize="15sp"
+        android:gravity="center"
+        />
+    <LinearLayout
+        android:id="@+id/invalid_container"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/file_name"
+            android:layout_width="150.0dp"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/ok_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:background="@drawable/roundblackbuttons"
+            android:text="Submit"
+            android:typeface="serif"
+            />
+    </LinearLayout>
+</LinearLayout>
