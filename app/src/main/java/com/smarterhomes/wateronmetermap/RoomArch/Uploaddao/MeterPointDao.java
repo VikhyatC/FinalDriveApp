@@ -25,7 +25,7 @@ public interface MeterPointDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void SaveMeterPointData(MeterPointData meterPointData);
 
-    @Query("SELECT * FROM MeterPointData WHERE apartment_Id LIKE :aptId")
+    @Query("SELECT * FROM MeterPointData WHERE apartment_Id LIKE :aptId ORDER BY MeterPointData.meter_number")
     List<MeterPointData> geMetersInApt(Integer aptId);
 
     @Query("SELECT COUNT(*) FROM MeterPointData")

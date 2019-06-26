@@ -16,7 +16,7 @@ import java.util.List;
 
 @Dao
 public interface SocietyDao {
-    @Query("SELECT * FROM SocietyData")
+    @Query("SELECT * FROM SocietyData ORDER BY SocietyData.societyNameApp")
     List<SocietyData> getAll();
 
     @Query("DELETE FROM SocietyData")

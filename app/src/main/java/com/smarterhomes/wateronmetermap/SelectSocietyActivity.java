@@ -10,6 +10,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.LongDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -386,12 +387,16 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                                 flag = 1;
                             }
 
+
+
+
                             Log.d("ApartmentsSize", String.valueOf(apartmentsInSoc.size()));
 
                             runOnUiThread(() -> {
                                 if (apartmentsInSoc.size()>0){
                                     int before_index = ShowLastSelectedApartment();
                                     if (isAptFound){
+
                                         Collections.swap(apartments,before_index,0);
                                         Collections.swap(apt_ids,before_index,0);
                                     }
@@ -477,12 +482,17 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                                 mtrPoints.add(meterPointData.getMptId());
                             }
 
+
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     if (metersInApt.size()>0){
+
+
+
                                         int mLoc_before_index = ShowLastSelectedMeterLocation();
                                         if (isLocFound){
+
                                             Collections.swap(metering_names,mLoc_before_index,0);
                                             Collections.swap(mtrPoints,mLoc_before_index,0);
                                         }
@@ -637,12 +647,18 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                 societies = new ArrayList<>();
                 socIds = new ArrayList<>();
                 ArrayList<SocietyData> allSocieties = (ArrayList<SocietyData>) db.societyDao().getAll();
+
                 for (SocietyData data : allSocieties){
                     societies.add(data.getSocietyName());
                     socIds.add(data.getSocietyId());
                 }
+
+
+
+
                 int before_index = ShowLastSelectedSociety();
                 if (isFound){
+
                     Collections.swap(societies,before_index,0);
                     Collections.swap(socIds,before_index,0);
                 }
@@ -702,31 +718,84 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                     societies = new ArrayList<>();
                     socIds = new ArrayList<>();
                     final JSONArray jsSociety = new JSONArray(response);
-                    for(int i=0; i <jsSociety.length(); i++){
-                        JSONObject object = jsSociety.getJSONObject(i);
-                        int soc_id = object.getInt("societyId");
-                        String soc_name = object.getString("societyName");
-                        SocietyData societyData = new SocietyData();
-                        societies.add(soc_name);
-                        socIds.add(soc_id);
-                        societyData.setSocietyId(soc_id);
-                        societyData.setSocietyName(soc_name);
-                        Executor myExecutor = Executors.newSingleThreadExecutor();
-                        myExecutor.execute(() -> {
-                           Log.d("Saving soc data", String.valueOf(societyData.getSocietyName()+":"+societyData.getSocietyId()));
-                           db.societyDao().SaveSocietyData(societyData);
 
+                    Runnable r1 = () -> {
+                        int soc_id = 0;
+                        String soc_name = "";
+                        for(int i=0; i <jsSociety.length(); i++){
+                            JSONObject object = null;
+                            try {
+                                object = jsSociety.getJSONObject(i);
+                                soc_id = object.getInt("societyId");
+                                soc_name = object.getString("societyName");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            SocietyData societyData = new SocietyData();
+                    /*societies.add(soc_name);
+                    socIds.add(soc_id);*/
+                            societyData.setSocietyId(soc_id);
+                            societyData.setSocietyName(soc_name);
+
+                            Log.d("Saving soc data", String.valueOf(societyData.getSocietyName()+":"+societyData.getSocietyId()));
+
+                            db.societyDao().SaveSocietyData(societyData);
+                        }
+                    };
+
+                    Runnable r2 = () -> {
+                        Log.e("rtrv","running");
+                        List<SocietyData> getSoc = db.societyDao().getAll();
+                        Log.d("getSoc size",getSoc.size()+"");
+                        for(int i=0;i<getSoc.size();i++){
+
+                            Log.d("Rtrv soc name ",getSoc.get(i).getSocietyName()+" id - "+getSoc.get(i).getSocietyId());
+                            societies.add(getSoc.get(i).getSocietyName());
+                            socIds.add(getSoc.get(i).getSocietyId());
+                        }
+
+                        int before_index = ShowLastSelectedSociety();
+                        if (isFound){
+                            Collections.swap(societies,before_index,0);
+                            Collections.swap(socIds,before_index,0);
+                        }
+                        Log.d("adapter","running");
+                        adapter = new ArrayAdapter<String>(SelectSocietyActivity.this,
+                                android.R.layout.simple_spinner_item, societies);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                societyList.setAdapter(adapter);
+                            }
                         });
+
+                    };
+
+                    Thread t1 = new Thread(r1);
+                    Thread t2 = new Thread(r2);
+
+                    t1.start();
+                    try {
+                        t1.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-//                    Collections.sort(societies);
+                    t2.start();
+
+
                     /*int before_index = ShowLastSelectedSociety();
                     if (isFound){
                         Collections.swap(societies,before_index,0);
-                    }*/
+                        Collections.swap(socIds,before_index,0);
+                    }
+                    Log.d("adapter","running");
                     adapter = new ArrayAdapter<String>(SelectSocietyActivity.this,
                             android.R.layout.simple_spinner_item, societies);
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    societyList.setAdapter(adapter);
+                    societyList.setAdapter(adapter);*/
 
 
 
@@ -839,21 +908,31 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
 
                     }
 
+
+
                     Executor myExecutor = Executors.newSingleThreadExecutor();
                     myExecutor.execute(() -> {
                         ArrayList<ApartmentData> apartmentData = new ArrayList<>();
+                        Log.e("selected soc id",selected_soc_id+"");
                         apartmentData = (ArrayList<ApartmentData>) db.apartmentDao().getApartmentsOfSociety(selected_soc_id);
                         for (ApartmentData data1:apartmentData){
                             Log.d("ApartmnentExec",data1.getAptName());
                             apartments.add(data1.getAptName());
                             apt_ids.add(data1.getAptId());
                         }
+
+
+
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
+
+
                                 int before_index = ShowLastSelectedApartment();
                                 if (isAptFound){
+
                                     Collections.swap(apartments,before_index,0);
                                     Collections.swap(apt_ids,before_index,0);
                                 }
@@ -930,6 +1009,10 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                             metering_names.add(data1.getMptName());
                             mtrPoints.add(data1.getMptId());
                         }
+
+
+
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -954,11 +1037,12 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
     }
 
     private void populateMeterSpinner() {
-            Collections.sort(metering_names);
-            Collections.sort(mtrPoints);
+
             int mLoc_before_index = ShowLastSelectedMeterLocation();
             if (isAptFound){
+
                 Collections.swap(metering_names,mLoc_before_index,0);
+                Collections.swap(mtrPoints,mLoc_before_index,0);
             }
             adapter_meterpts = new ArrayAdapter<String>(SelectSocietyActivity.this,
                     android.R.layout.simple_spinner_item, metering_names);

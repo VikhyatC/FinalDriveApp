@@ -27,7 +27,7 @@ public interface ApartmentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void SaveApartmentData(ApartmentData apartmentData);
 
-    @Query("SELECT * FROM ApartmentData WHERE societyIdApp LIKE :socID")
+    @Query("SELECT * FROM ApartmentData WHERE societyIdApp LIKE :socID ORDER BY ApartmentData.apartmentNameApp")
     List<ApartmentData> getApartmentsOfSociety(Integer socID);
 
     @Query("SELECT COUNT(*) FROM ApartmentData")
