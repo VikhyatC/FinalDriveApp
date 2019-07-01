@@ -22,6 +22,8 @@ public class ApartmentData {
     @ColumnInfo(name ="apartmentNameApp")
     private String aptName;
 
+
+
     public int getSocId() {
         return socId;
     }

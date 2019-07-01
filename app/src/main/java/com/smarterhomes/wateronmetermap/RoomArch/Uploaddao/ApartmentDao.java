@@ -32,4 +32,10 @@ public interface ApartmentDao {
 
     @Query("SELECT COUNT(*) FROM ApartmentData")
     public int hasData();
+
+    @Query("SELECT ApartmentData.societyIdApp FROM ApartmentData WHERE aptId LIKE :aptid")
+    public int getSocId(Integer aptid);
+
+    @Query("SELECT ApartmentData.apartmentNameApp FROM ApartmentData WHERE aptId LIKE :aptid")
+    public String getAptName(Integer aptid);
 }

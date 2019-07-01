@@ -22,6 +22,9 @@ public interface MeterPointDao {
     @Query("DELETE FROM MeterPointData")
     void deleteAll();
 
+    @Query("SELECT MeterPointData.apartment_Id FROM MeterPointData WHERE meter_Id LIKE :meter_id")
+    public int getAptId(Integer meter_id);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void SaveMeterPointData(MeterPointData meterPointData);
 
@@ -30,4 +33,10 @@ public interface MeterPointDao {
 
     @Query("SELECT COUNT(*) FROM MeterPointData")
     public int hasData();
+
+    @Query("SELECT MeterPointData.meter_number FROM MeterPointData WHERE meter_Id LIKE :meter_id")
+    public String getMeterName(Integer meter_id);
+
+    @Query("SELECT MeterPointData.meteringPointId FROM MeterPointData WHERE meter_Id LIKE :meter_id")
+    public int getMtrPointId(Integer meter_id);
 }

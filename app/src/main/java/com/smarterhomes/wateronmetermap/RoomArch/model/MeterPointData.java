@@ -14,13 +14,25 @@ import javax.annotation.Nonnull;
 public class MeterPointData {
     @PrimaryKey
     @Nonnull
+    @ColumnInfo(name = "meteringPointId")
     private int mptId;
 
     @ColumnInfo(name ="meter_number")
     private String mptName;
 
+    @ColumnInfo(name = "meter_Id")
+    private int meter_id;
+
     @ColumnInfo(name="apartment_Id")
     private int aptId;
+
+    public int getMeter_id() {
+        return meter_id;
+    }
+
+    public void setMeter_id(int meter_id) {
+        this.meter_id = meter_id;
+    }
 
     public int getAptId() {
         return aptId;

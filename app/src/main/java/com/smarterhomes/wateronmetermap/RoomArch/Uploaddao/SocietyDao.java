@@ -28,5 +28,7 @@ public interface SocietyDao {
     @Query("SELECT COUNT(*) FROM SocietyData")
     public int hasData();
 
+    @Query("SELECT SocietyData.societyNameApp FROM SocietyData WHERE societyId LIKE :socid")
+    public String getSocName(Integer socid);
 
 }

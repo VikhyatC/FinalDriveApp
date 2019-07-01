@@ -85,111 +85,228 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_marginTop="10dp"
                 android:layout_marginLeft="4dp"
                 android:id="@+id/company_logo"
                 android:src="@drawable/sh_logo"
                 android:layout_marginBottom="5.0dp"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="4.8"
+                android:layout_weight="8.8"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:layout_marginLeft="15.0dp"
-                android:layout_marginRight="15.0dp"
-                android:layout_marginTop="50dp"
-                android:text="Select Society"
-                android:textColor="@android:color/darker_gray"
-                android:layout_gravity="start"
-                />
-            <Spinner
-                android:id="@+id/societyList"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="15.0dp"
-                android:gravity="start"
-                android:layout_marginRight="15.0dp"
-                android:layout_weight="1.5"
-                android:layout_marginBottom="8dp"
-                android:layout_height="0dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
+            <LinearLayout
 
-                android:layout_marginLeft="15.0dp"
-                android:layout_marginRight="15.0dp"
-                android:text="Select Apartment"
-                android:layout_weight="2"
-                android:textColor="@android:color/darker_gray"
-                android:layout_gravity="start"
-                />
-            <Spinner
-                android:id="@+id/aptList"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="15.0dp"
-                android:gravity="start"
-                android:layout_marginRight="15.0dp"
-                android:layout_weight="1.5"
-                android:layout_height="0dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginLeft="15.0dp"
-                android:layout_marginRight="15.0dp"
                 android:layout_marginTop="8dp"
-                android:layout_weight="2"
-                android:text="Select Metering point"
-                android:textColor="@android:color/darker_gray"
-                android:layout_gravity="start"
-                />
-            <Spinner
-                android:id="@+id/mtrList"
+                android:weightSum="2"
                 android:layout_width="match_parent"
-                android:layout_weight="1.5"
-                android:gravity="start"
-                android:layout_marginLeft="15.0dp"
-                android:layout_marginRight="15.0dp"
-                android:layout_height="0dp"/>
-            <Button
-                android:id="@+id/select_btn"
-                android:layout_margin="20.0dp"
-                android:layout_width="120.0dp"
-                android:background="@drawable/curvedcorners"
                 android:layout_height="wrap_content"
-                android:text="Select"
-                android:textColor="@android:color/white"
-                android:textAllCaps="false"
-                />
-            <RadioGroup
-                android:orientation="horizontal"
-                android:id="@+id/radioUrl"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/manual_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Manual"
+                    android:background="@color/colorPrimaryDark"
+                    android:textColor="@android:color/white"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"/>
+
+                <Button
+                    android:id="@+id/scan_switch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/darker_gray"
+                    android:text="Scan"
+                    android:textColor="@android:color/black"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/manual_view"
                 android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_gravity="bottom"
-                android:layout_height="80.0dp" >
+                android:layout_height="wrap_content"
+                android:weightSum="16"
+                android:visibility="visible"
+                android:orientation="vertical">
 
-                <RadioButton
-                    android:id="@+id/radioBefore"
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_marginRight="10.0dp"
-                    android:layout_height="match_parent"
-                    android:text="Before"
-                    android:checked="true"
-                    android:layout_marginEnd="10.0dp" />
-
-                <RadioButton
-                    android:id="@+id/radioAfter"
-                    android:layout_marginLeft="10.0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:layout_marginLeft="15.0dp"
+                    android:layout_marginRight="15.0dp"
+                    android:layout_marginTop="50dp"
+                    android:text="Select Society"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_gravity="start"
+                    />
+                <Spinner
+                    android:id="@+id/societyList"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="15.0dp"
+                    android:gravity="start"
+                    android:layout_marginRight="15.0dp"
+                    android:layout_weight="2.5"
+                    android:layout_marginBottom="8dp"
+                    android:layout_height="0dp"/>
+                <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="After"
-                    android:layout_marginStart="10.0dp" />
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
 
-            </RadioGroup>
+                    android:layout_marginLeft="15.0dp"
+                    android:layout_marginRight="15.0dp"
+                    android:text="Select Apartment"
+                    android:layout_weight="2"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_gravity="start"
+                    />
+                <Spinner
+                    android:id="@+id/aptList"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="15.0dp"
+                    android:gravity="start"
+                    android:layout_marginRight="15.0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="0dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginLeft="15.0dp"
+                    android:layout_marginRight="15.0dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="2"
+                    android:text="Select Metering point"
+                    android:textColor="@android:color/darker_gray"
+                    android:layout_gravity="start"
+                    />
+                <Spinner
+                    android:id="@+id/mtrList"
+                    android:layout_width="match_parent"
+                    android:layout_weight="2.5"
+                    android:gravity="start"
+                    android:layout_marginLeft="15.0dp"
+                    android:layout_marginRight="15.0dp"
+                    android:layout_height="0dp"/>
+                <Button
+                    android:id="@+id/select_btn"
+                    android:layout_margin="20.0dp"
+                    android:layout_width="120.0dp"
+                    android:background="@drawable/curvedcorners"
+                    android:layout_height="wrap_content"
+                    android:text="Select"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    />
+                <RadioGroup
+                    android:orientation="horizontal"
+                    android:id="@+id/radioUrl"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"
+                    android:layout_height="80.0dp" >
+
+                    <RadioButton
+                        android:id="@+id/radioBefore"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="10.0dp"
+                        android:layout_height="match_parent"
+                        android:text="Before"
+                        android:checked="true"
+                        android:layout_marginEnd="10.0dp" />
+
+                    <RadioButton
+                        android:id="@+id/radioAfter"
+                        android:layout_marginLeft="10.0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="After"
+                        android:layout_marginStart="10.0dp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/scaner_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="16"
+                android:visibility="gone"
+                android:orientation="vertical">
+
+
+                <Button
+                    android:id="@+id/scan_btn"
+                    android:layout_margin="20.0dp"
+                    android:layout_width="120.0dp"
+                    android:background="@drawable/curvedcorners"
+                    android:layout_height="wrap_content"
+                    android:text="Scan"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textAllCaps="false"
+                    />
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:id="@+id/info_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="Results will appear here"/>
+
+                <Button
+                    android:id="@+id/camera_btn"
+                    android:layout_margin="20.0dp"
+                    android:layout_width="120.0dp"
+                    android:background="@drawable/curvedcorners"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:text="Select"
+                    android:textAllCaps="false"/>
+
+
+                <RadioGroup
+                    android:orientation="horizontal"
+                    android:id="@+id/scan_radioUrl"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:layout_gravity="bottom"
+                    android:layout_height="80.0dp" >
+
+                    <RadioButton
+                        android:id="@+id/scan_radioBefore"
+                        android:layout_width="wrap_content"
+                        android:layout_marginRight="10.0dp"
+                        android:layout_height="match_parent"
+                        android:text="Before"
+                        android:checked="true"
+                        android:layout_marginEnd="10.0dp" />
+
+                    <RadioButton
+                        android:id="@+id/scan_radioAfter"
+                        android:layout_marginLeft="10.0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="After"
+                        android:layout_marginStart="10.0dp" />
+
+                </RadioGroup>
+
+            </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 

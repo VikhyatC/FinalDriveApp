@@ -24,11 +24,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -85,8 +87,9 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
     private Spinner societyList,aptList,mtrList;
     private List<String> societies,apartments,metering_names ;
     private List<Integer> apt_ids,mtrPoints,socIds;
-    private Button select_btn;
-    private static boolean FIRSTRUN = true;
+    private Button select_btn,scan_switch,manual_switch,scan_btn;
+    private LinearLayout manual_view,scan_view;
+    public static boolean FIRSTRUN = true;
     private RadioButton radioBefore,radioAfter;
     private RadioGroup radioGroupUrl;
     public static ProgressBar loadingBar;
@@ -95,6 +98,7 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
     private ArrayAdapter<String> adapter,adapter_apts,adapter_meterpts;
     private ImageView company_logo,logOuticon;
     private int note;
+    public static TextView info_txt;
     private boolean isFound;
     private ImageButton upload_btn,resync_btn;
     private AppDataBase db ;
@@ -106,7 +110,11 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
     private int flag = 0;
     private ProgressDialog progressDialog;
     Snackbar snackbar;
+    public static RadioButton scan_rd_btn;
+    public static RadioGroup scan_radio_grp;
+    public static Button camera_btn;
     private int count = 0;
+    public static  int scan_selected_btn = 0;
 
     @Override
     public void onBackPressed() {
@@ -136,6 +144,55 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
         resync_btn = findViewById(R.id.resync_button);
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Uploading data please wait...");
+        scan_switch = findViewById(R.id.scan_switch);
+        manual_switch = findViewById(R.id.manual_switch);
+        manual_view = findViewById(R.id.manual_view);
+        scan_view = findViewById(R.id.scaner_view);
+        info_txt = findViewById(R.id.info_txt);
+        scan_btn = findViewById(R.id.scan_btn);
+        camera_btn = findViewById(R.id.camera_btn);
+        scan_radio_grp = findViewById(R.id.scan_radioUrl);
+
+
+        scan_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manual_switch.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+                manual_switch.setTextColor(getResources().getColor(android.R.color.black));
+
+                scan_switch.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                scan_switch.setTextColor(getResources().getColor(android.R.color.white));
+
+                manual_view.setVisibility(GONE);
+                scan_view.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+        manual_switch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                manual_switch.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                manual_switch.setTextColor(getResources().getColor(android.R.color.white));
+
+                scan_switch.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
+                scan_switch.setTextColor(getResources().getColor(android.R.color.black));
+
+                manual_view.setVisibility(View.VISIBLE);
+                scan_view.setVisibility(GONE);
+            }
+        });
+
+
+        scan_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),BarcodeScannerActivity.class));
+            }
+        });
+
+
         snackbar = Snackbar
                 .make(findViewById(R.id.main_layout), "No internet connection !", Snackbar.LENGTH_LONG);
 
@@ -234,6 +291,7 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                           Log.d("Saved byte img",uploadDataList.get(i).getImgBytes()+"");*/
 
 
+
                                     try {
                                         PerformSocietyDriveOperation(uploadDataList.get(i).getSociety_name());
                                         PerformAptDriveOperation(uploadDataList.get(i).getApt_name());
@@ -307,6 +365,8 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
 
         });
     }
+
+
 
     public boolean isInternetAvailable() {
 
@@ -553,6 +613,8 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                 int id = radioGroupUrl.getCheckedRadioButtonId();
                 RadioButton btn = (RadioButton)findViewById(id);
                 FIRSTRUN = false;
+                Log.e("radio id",id+"");
+                Log.e("radio btn",btn.getText().toString());
                 getSharedPreferences("defaults_pref",Context.MODE_PRIVATE).edit().putBoolean("app_reset",false).putString("stateCheck",btn.getText().toString()).apply();
                 Intent intent = new Intent(SelectSocietyActivity.this,MainActivity.class);
                 startActivity(intent);
@@ -989,10 +1051,12 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                         JSONObject object = array.getJSONObject(i);
                         int mp_id = object.getInt("meteringPointId");
                         String location = object.getString("location");
+                        int meter_id = object.getInt("meterId");
                         int aptId = object.getInt("aptId");
                         pointData.setAptId(aptId);
                         pointData.setMptId(mp_id);
                         pointData.setMptName(location);
+                        pointData.setMeter_id(meter_id);
                         Executor myExecutor = Executors.newSingleThreadExecutor();
                         myExecutor.execute(() -> {
                             ArrayList<MeterPointData> meterData = new ArrayList<>();
@@ -1160,6 +1224,8 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
 
         System.out.println("Folder ID & Folder name: " + file.getId()+"&"+file.getName());
     }
+
+
 
 }
 
