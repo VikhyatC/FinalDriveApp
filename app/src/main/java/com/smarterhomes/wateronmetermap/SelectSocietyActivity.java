@@ -41,13 +41,18 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.batch.BatchRequest;
+import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.http.FileContent;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.Permission;
 import com.smarterhomes.wateronmetermap.Helpers.DriveServiceHelper;
 import com.smarterhomes.wateronmetermap.Helpers.InstallerHelper;
 import com.smarterhomes.wateronmetermap.Interfaces.InstallerInterface;
@@ -84,6 +89,7 @@ import static com.google.android.gms.drive.Drive.getDriveResourceClient;
 public class SelectSocietyActivity extends AppCompatActivity implements InstallerInterface{
     private static final String TAG = "SelectActivity";
     private static final int REQUEST_CODE_SIGN_IN = 1;
+    private static final String DOMAIN_NAME = "smarterhomes.com";
     private Spinner societyList,aptList,mtrList;
     private List<String> societies,apartments,metering_names ;
     private List<Integer> apt_ids,mtrPoints,socIds;
@@ -265,6 +271,23 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
             }
         });
 
+        JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
+            @Override
+            public void onFailure(GoogleJsonError e,
+                                  HttpHeaders responseHeaders)
+                    throws IOException {
+                // Handle error
+                System.err.println(e.getMessage());
+            }
+
+            @Override
+            public void onSuccess(Permission permission,
+                                  HttpHeaders responseHeaders)
+                    throws IOException {
+                System.out.println("Permission ID: " + permission.getId());
+            }
+        };
+
 
 
         upload_btn.setOnClickListener(new View.OnClickListener() {
@@ -284,6 +307,7 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
                             int size = uploadDatabase.uploadDao().getAll().size();
                             Log.d("Size list",size+"");
                             count = 0;
+                            String mailId = getSharedPreferences("defaults_pref",Context.MODE_PRIVATE).getString("mailId","");
                             if(size != 0){
                                 for(int i =0;i<size;i++){
                                     uploadDataList.add(uploadDatabase.uploadDao().getAll().get(i));
@@ -318,10 +342,23 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
 
                                     try {
 
-
                                         File upld_file = googleDriveService.files().create(file,fc).setFields("id,parents").execute();
-
                                         Log.d("File Id :",upld_file.getId());
+                                        String imgUrl = "https://drive.google.com/open?id="+upld_file.getId();
+                                        BatchRequest batch = googleDriveService.batch();
+
+
+                                        Permission domainPermission = new Permission()
+                                                .setType("domain")
+                                                .setRole("reader")
+                                                .setDomain(DOMAIN_NAME);
+                                        googleDriveService.permissions().create(upld_file.getId(), domainPermission)
+                                                .setFields("id")
+                                                .queue(batch, callback);
+
+                                        batch.execute();
+
+                                        InstallerHelper.SendUrlToServer(Integer.parseInt(uploadDataList.get(i).getAptId()),uploadDataList.get(i).getMeterId(),mailId,uploadDataList.get(i).getState(),imgUrl,SelectSocietyActivity.this);
                                         count++;
                                     } catch (IOException e) {
                                         e.printStackTrace();
@@ -647,7 +684,7 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
         GoogleSignInOptions signInOptions =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
-                        .requestScopes(new Scope(DriveScopes.DRIVE_FILE))
+                        .requestScopes(new Scope(DriveScopes.DRIVE))
                         .build();
         mGoogleclient = GoogleSignIn.getClient(this, signInOptions);
 
@@ -969,9 +1006,6 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
 
 
                     }
-
-
-
                     Executor myExecutor = Executors.newSingleThreadExecutor();
                     myExecutor.execute(() -> {
                         ArrayList<ApartmentData> apartmentData = new ArrayList<>();
@@ -1120,16 +1154,6 @@ public class SelectSocietyActivity extends AppCompatActivity implements Installe
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(SelectSocietyActivity.this, "Url sent successfully :" + getSharedPreferences("defaults_pref", Context.MODE_PRIVATE).getString("SocfolderDrive", ""), Toast.LENGTH_LONG).show();
-//                SharedPreferences preferences = getSharedPreferences("defaults_pref",Context.MODE_PRIVATE);
-//                loadAfterDefaults();
-                Log.d("SocietyBefore", getSharedPreferences("defaults_pref", Context.MODE_PRIVATE).getString("SocfolderDrive", ""));
-                societyList.setSelection(adapter.getPosition(getSharedPreferences("defaults_pref", Context.MODE_PRIVATE).getString("SocfolderDrive", "")));
-                radioAfter.setChecked(true);
-                if (!FIRSTRUN) {
-                    loadingBar.setVisibility(GONE);
-                    FIRSTRUN = true;
-                }
 
             }
         });
